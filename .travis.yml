@@ -9,7 +9,7 @@ after_script:
 - npm install -g codeclimate-test-reporter
 - codeclimate-test-reporter < coverage/lcov.info
 deployd:
-  provaider: heroku
+  provider: heroku
   on: master
   app: uniritter-node-aline-2016
   api_key:

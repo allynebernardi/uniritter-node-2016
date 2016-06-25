@@ -4,58 +4,40 @@ module.exports = function () {
         chai = require('chai'),
         expect = chai.expect;
         
-    this.Given(/^an existing order with a (.*) status$/, function (status) {
-        const 
-            that = this,
-            payload = {
-            data: {
-                type: 'orders',
-                attributes: {
-                    status: status,
-                    items: [{ product_id: '598b04ea-8c20-4240-9c2b-1d36350a8d33', quantity: 1}]
-                    }
-                }
-            }
-        
-
-        return this.doHttpRequest('orders', 'post', payload)
-        .then((response) => {
-            that.existingOrder = response.body;
-            return response;
-        });
-    });
+ 
     
-    this.When(/^I search this order$/, function () {
-        const 
-            that = this,
-            id = this.existingOrder.data.id;
-        return this.doHttpRequest('orders/' + id, 'get', undefined)
-        .then((response) => {
-            that.responseBody = JSON.parse(response.body);
-            return response;
-        });
-    });
+    /*Scenario: posting product*/
     
-    this.Then(/^I receive the order data$/, function () {
-        expect(this.responseBody.data).not.to.be.undefined;
-    });
-    
-    this.Then(/^its status is (.*)$/, function (status) {
-        expect(this.responseBody.data.attributes.status).to.equal(status);
-    });
-    
-    /*Scenario: posting order*/
-    
-     this.Given(/^a valid order$/, function () {
+     this.Given(/^ a valid product$/, function () {
          //this.payload = require('../fixtures/valid-order.json')
          this.payload ={
             data: {
-                type: 'orders',
+                type: 'products',
                 attributes: {
-                    items: [{ product_id: '598b04ea-8c20-4240-9c2b-1d36350a8d33', quantity: 1}]
+                    items: [{ name:'product1', price: 5.0}]
                     }
                 }
             }
     });
+    
+    this.When(/^ I submit it to the API$/, function () {
+        const 
+            that = this
+              return this.doHttpRequest('products/' + 'products/', 'post', this.payload)
+        .then((response) => {
+            that.validyProduct.id = response.body;
+            return response;
+        });
+    });
+    
+    this.Then(/^ I receive a success message$/, function () {
+        expect(this.validyProduct.id).equals(201);
+    });
+    
+    this.Then(/^the new product id (.*)$/, function () {
+        expect(this.validyProduct.id)
+    });
+    
+
 
 }
