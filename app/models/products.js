@@ -9,7 +9,7 @@ module.exports = function (server) {
             type: 'products',
             attributes: {
                 name: Types.string().required(),
-                price: Types.Number().required(),
+                price: Types.number().required(),
                 model: Types.string().forbidden(),
                 brand: Types.string().forbidden(),
                              
